@@ -39,17 +39,20 @@ print(unique_name,unique_count)
 def resize():
     with open('/Users/sharmarochan/Desktop/extracted files/num_data_resized_images.csv','w') as f:
         writer = csv.writer(f)
-        lable =0
-        loop_check = 0
+        lable =1
+        loop_check = ""
         pos =0
-
+        print(dirs_array_sort)
+        val_store = "Barking_deer"
         for item in dirs_array_sort:
-            while True:
-                if loop_check == unique_count[pos]:
+            if not item.startswith('.') and item != 'Thumbs.db':
+                par1, par2 = item.rsplit('_', 1)
+
+                if val_store != par1:
                     lable = lable + 1
-                    print("lable",lable)
-                    pos = pos + 1
-            loop_check = loop_check + 1
+
+                val_store= par1
+
 
             if not item.startswith('.') and item != 'Thumbs.db':
                 if os.path.isfile(path + item):
@@ -57,39 +60,6 @@ def resize():
                     imResize = im.resize((256, 256), Image.ANTIALIAS)
                     value = np.array(imResize)
                     writer.writerow([value, lable])
-
-
-'''
-
-        for item,loop in zip(dirs_array_sort,unique_count):
-            loop_check = loop_check + 1
-            print("->loop_check:", loop_check)
-
-            if loop == loop_check:
-                loop_check = 0
-                lable = lable+1
-            print("-->lable",lable)
-
-
-            if not item.startswith('.') and item != 'Thumbs.db':
-                if os.path.isfile(path+item):
-                    im = Image.open(path+item)
-                    imResize = im.resize((256,256), Image.ANTIALIAS)
-                    value = np.array(imResize)
-                    writer.writerow([value,lable])
-
-'''
-
-
-
-
-            # imResize.save(f + ' resized.jpg', 'JPEG', quality=90)
-
-
-
-
-
-
 
 
 resize()

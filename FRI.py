@@ -11,31 +11,6 @@ dirs_array_sort = np.sort(dirs_array)
 
 
 
-name = []
-for sp in dirs_array_sort:
-    if not sp.startswith('.') and sp != 'Thumbs.db':
-        part1, part2= sp.rsplit('_', 1)
-        name.append(part1)
-
-
-
-
-unique_name = []
-for x in name:
-    # check if exists in unique_list or not
-    if x not in unique_name:
-        unique_name.append(x)
-
-
-unique_count = []
-for unique in unique_name:
-    countt = name.count(unique)
-    unique_count.append(countt)
-
-
-print(unique_name,unique_count)
-
-
 def resize():
     with open('/Users/sharmarochan/Desktop/extracted files/num_data_resized_images.csv','w') as f:
         writer = csv.writer(f)

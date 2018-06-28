@@ -11,7 +11,7 @@ import warnings
 
 
 
-path = "/Users/sharmarochan/Desktop/extracted files/resized_images/"
+path = "/Users/sharmarochan/Desktop/extracted files/images_together/"
 dirs = os.listdir( path )
 dirs_array = np.array(dirs)
 dirs_array_sort = np.sort(dirs_array)
@@ -62,22 +62,30 @@ def shuffel_csv():
 def dataaugumentation():
 
     with warnings.catch_warnings():
-        warnings.filterwarnings("ignore", category=FutureWarning)
+        warnings.filterwarnings("ignore", category = FutureWarning)
 
     datagen = ImageDataGenerator( featurewise_center=True, featurewise_std_normalization=True, rotation_range=20, width_shift_range=0.2, height_shift_range=0.2, horizontal_flip=True)
+    image_per = 0
 
 
     for item in dirs_array_sort:
 
         if not item.startswith('.') and item != 'Thumbs.db':
+
+            image_per = image_per + 1
+            print("image: ", image_per)
+
             im = load_img(path + item)
             x = img_to_array(im)
             x = x.reshape((1,) + x.shape)
             i = 0
-            for batch in datagen.flow(x, batch_size=1, save_to_dir='augumented_image', save_prefix='agu_image'+str(i), save_format='jpg'):
+
+            for batch in datagen.flow(x, batch_size=1, save_to_dir='augumented_image', save_prefix=item + '_agu_' + str(i), save_format='jpg'):
                 i += 1
-                if i > 20:
+                if i > 9:
                     break
+
+
 
 
 dataaugumentation()

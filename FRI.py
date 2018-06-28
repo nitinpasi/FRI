@@ -5,7 +5,9 @@ from collections import Counter
 import pandas as pd
 from random import shuffle
 import random
-from keras.preprocessing.image import ImageDataGenerator
+from keras.preprocessing.image import ImageDataGenerator, img_to_array, load_img,array_to_img
+
+import warnings
 
 
 
@@ -14,6 +16,7 @@ dirs = os.listdir( path )
 dirs_array = np.array(dirs)
 dirs_array_sort = np.sort(dirs_array)
 # print(dirs_array_sort)
+
 
 
 
@@ -58,16 +61,23 @@ def shuffel_csv():
 
 def dataaugumentation():
 
-    datagen = ImageDataGenerator( rotation_range=40, width_shift_range=0.2, height_shift_range=0.2, rescale=1./255, shear_range=0.2, zoom_range=0.2, horizontal_flip=True, fill_mode='nearest')
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", category=FutureWarning)
+
+    datagen = ImageDataGenerator( featurewise_center=True, featurewise_std_normalization=True, rotation_range=20, width_shift_range=0.2, height_shift_range=0.2, horizontal_flip=True)
+
 
     for item in dirs_array_sort:
 
-        im = Image.open(path + item)
-        x = x.reshape((1,) + x.shape)
-        i = 0
-        for batch in datagen.flow(x, batch_size=1, save_to_dir='preview', save_prefix='augumented', save_format='jpg'):
-            i += 1
-            if i > 20:
-                break
+        if not item.startswith('.') and item != 'Thumbs.db':
+            im = load_img(path + item)
+            x = img_to_array(im)
+            x = x.reshape((1,) + x.shape)
+            i = 0
+            for batch in datagen.flow(x, batch_size=1, save_to_dir='augumented_image', save_prefix='agu_image'+str(i), save_format='jpg'):
+                i += 1
+                if i > 20:
+                    break
+
 
 dataaugumentation()

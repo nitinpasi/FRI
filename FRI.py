@@ -1,27 +1,18 @@
-from PIL import Image
 import os, sys, csv
 import numpy as np
-from collections import Counter
 import pandas as pd
-from random import shuffle
-import random
-from keras.preprocessing.image import ImageDataGenerator, img_to_array, load_img,array_to_img
-
+from keras.preprocessing.image import ImageDataGenerator, img_to_array, load_img
 import warnings
-
 
 
 path = "/Users/sharmarochan/Desktop/extracted files/augumented_image/"
 dirs = os.listdir( path )
 dirs_array = np.array(dirs)
 dirs_array_sort = np.sort(dirs_array)
-# print(dirs_array_sort)
-
-import re
 
 
 def path_csv():
-    with open('/Users/sharmarochan/Desktop/extracted files/num_images_temp.csv','w') as f:
+    with open('/Users/sharmarochan/Desktop/extracted files/image_path_lable.csv','w') as f:
         writer = csv.writer(f)
         lable =1
         image = 0
@@ -34,11 +25,7 @@ def path_csv():
                 image = image + 1
 
                 par1, par2, par3,par4,par5= item.rsplit('_', 4)
-                print(par1)
-
                 im = path+item
-                print(im)
-
 
                 if val_store != par1:
                     lable = lable + 1
@@ -50,7 +37,7 @@ def path_csv():
                     writer.writerow([im, lable])
 
 
-path_csv()
+# path_csv()
 
 def shuffel_csv():
     data = pd.read_csv('/Users/sharmarochan/Desktop/extracted files/num_images.csv')
@@ -89,3 +76,4 @@ def dataaugumentation():
                 if i > 15:
                     break
 
+# dataaugumentation()

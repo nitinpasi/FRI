@@ -42,6 +42,7 @@ def path_csv():
 
                 if val_store != par1:
                     lable = lable + 1
+                    val_store = par1
 
             if not item.startswith('.') and item != 'Thumbs.db':
                 if os.path.isfile(path + item):

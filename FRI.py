@@ -1,11 +1,23 @@
-import os, sys, csv
+import os, sys, csv, cv2
 import numpy as np
 import pandas as pd
 from keras.preprocessing.image import ImageDataGenerator, img_to_array, load_img
 import warnings
+from PIL import Image
+from keras.preprocessing import image
+from keras.applications.imagenet_utils import preprocess_input
+
+from matplotlib.pyplot import imshow
+
+
+from keras.models import Sequential
+from keras.layers import Dense, Conv2D, MaxPooling2D, Dropout, Flatten
 
 
 path = "/Users/sharmarochan/Desktop/extracted files/augumented_image/"
+test_path = "/Users/sharmarochan/Desktop/extracted files/resized_images/"
+
+
 dirs = os.listdir( path )
 dirs_array = np.array(dirs)
 dirs_array_sort = np.sort(dirs_array)
@@ -36,16 +48,31 @@ def path_csv():
                     # im = Image.open(path + item)
                     writer.writerow([im, lable])
 
-
 # path_csv()
 
-def shuffel_csv():
-    data = pd.read_csv('/Users/sharmarochan/Desktop/extracted files/num_images.csv')
-    data.reset_index(drop=True)
-    print(data)
 
 
-# shuffel_csv()
+def extract_pixels_from_jpg():
+
+    with open('image_path_lable.csv', 'rb') as f:
+        reader = csv.reader(f, delimiter=';')
+        for row in reader:
+            p = row[0]
+            p1, p2 = p.split(',')  #p1 is path, # p2 is lable
+            print(p1)
+            img_path = '/Users/sharmarochan/Desktop/extracted files/augumented_image/Barking_deer_agu_0_0_0.jpg'
+
+            img = image.load_img(img_path, target_size=(256, 256))
+            imshow(img)
+            x = image.img_to_array(img)
+            x = np.expand_dims(x, axis=0)
+            x = preprocess_input(x)
+            print (x.shape)
+
+            break
+
+extract_pixels_from_jpg()
+
 
 
 def dataaugumentation():
@@ -77,3 +104,7 @@ def dataaugumentation():
                     break
 
 # dataaugumentation()
+
+
+
+# def createModel():
